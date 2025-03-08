@@ -9,7 +9,10 @@ class Weapon
 
     public Weapon(int damageSize, int gunMagazineSize)
     {
-        if (damageSize <= 0 || gunMagazineSize <= 0)
+        if (damageSize <= 0)
+            throw new ArgumentOutOfRangeException();
+
+        if (gunMagazineSize <= 0)
             throw new ArgumentOutOfRangeException();
 
         _damage = damageSize;
@@ -50,6 +53,13 @@ class Player
 
         if (_health >= damage)
             _health -= damage;
+        else
+            Die();
+    }
+
+    private void Die()
+    {
+        _health = 0;
     }
 }
 
@@ -57,9 +67,9 @@ class Bot
 {
     private readonly Weapon _weapon;
 
-    public Bot()
+    public Bot(Weapon weapon)
     {
-        _weapon = new Weapon();
+        _weapon = weapon;
     }
 
     public void OnSeePlayer(Player player)

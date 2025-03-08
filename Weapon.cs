@@ -10,7 +10,7 @@ class Weapon
     public Weapon(int damageSize, int gunMagazineSize)
     {
         if (damageSize <= 0 || gunMagazineSize <= 0)
-            return new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();
 
         _damage = damageSize;
         _bullets = gunMagazineSize;
@@ -21,10 +21,10 @@ class Weapon
     public void Fire(Player player)
     {
         if (player == null)
-            return new ArgumentNullException();
+            throw new ArgumentNullException();
 
         if (_bullets <= 0)
-            return new InvalidOperationException();
+            throw new InvalidOperationException();
 
         player.TakeDamage(_damage);
         _bullets -= _bulletsPerShot;
@@ -38,7 +38,7 @@ class Player
     public Player(int healthSize)
     {
         if (healthSize <= 0)
-            return new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();
 
         _health = healthSize;
     }
@@ -46,7 +46,7 @@ class Player
     public void TakeDamage(int damage)
     {
         if (damage <= 0)
-            return new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();
 
         if (_health >= damage)
             _health -= damage;
@@ -65,7 +65,7 @@ class Bot
     public void OnSeePlayer(Player player)
     {
         if (player == null)
-            return new ArgumentNullException();
+            throw new ArgumentNullException();
 
         _weapon.Fire(player);
     }

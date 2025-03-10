@@ -29,8 +29,11 @@ class Weapon
         if (_bullets <= 0)
             throw new InvalidOperationException();
 
-        player.TakeDamage(_damage);
-        _bullets -= _bulletsPerShot;
+        if (_bullets <= _bulletsPerShot)
+            throw new ArgumentOutOfRangeException();
+
+            player.TakeDamage(_damage);
+            _bullets -= _bulletsPerShot;
     }
 }
 
@@ -51,15 +54,15 @@ class Player
         if (damage <= 0)
             throw new ArgumentOutOfRangeException();
 
-        if (_health >= damage)
-            _health -= damage;
-        else
+        _health = Math.Max(0, _health - damage);
+
+        if (_health == 0)
             Die();
     }
 
     private void Die()
     {
-        _health = 0;
+        Console.WriteLine("Player dead.");
     }
 }
 
@@ -69,6 +72,9 @@ class Bot
 
     public Bot(Weapon weapon)
     {
+        if (weapon == null)
+            throw new ArgumentNullException();
+
         _weapon = weapon;
     }
 
